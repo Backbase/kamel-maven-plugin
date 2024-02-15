@@ -12,7 +12,7 @@
   <licenses>
     <license>
       <name>Backbase License 2.0</name>
-      <url>https://raw.githubusercontent.com/tolga_backbase/kamel-maven-plugin/main/LICENSE?token=GHSAT0AAAAAACN3R2GQ2MA75SQBTB35S44OZOMXFSQ</url>
+      <url>https://raw.githubusercontent.com/Backbase/kamel-maven-plugin/main/LICENSE</url>
       <distribution>repo</distribution>
     </license>
   </licenses>

@@ -9,10 +9,6 @@ public class ExampleApiIntegration extends RouteBuilder {
     @Override
     public void configure() {
 
-        onException(Exception.class)
-                .handled(true)
-                .to("kamelet:example-api-integration-generic-exception-handler-kamelet-yaml");
-
         from("direct://getRoot")
                 .log(LoggingLevel.INFO, "Example root endpoint has been called")
                 .end();

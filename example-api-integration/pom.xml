@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.backbase.oss</groupId>
+        <artifactId>kamel-maven-plugin-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>example-api-integration</artifactId>
+
+    <packaging>pom</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>Example Api Integration</description>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <camel.version>4.0.0</camel.version>
+        <quarkus.platform.version>3.2.6.Final</quarkus.platform.version>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-bom</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-camel-bom</artifactId>
+                <version>${quarkus.platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-kamelet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-servlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-yaml-dsl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-jolt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-bean</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-platform-http</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-http</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-direct</artifactId>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.quarkus.platform</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.backbase.oss</groupId>
+                <artifactId>kamel-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>run</goal>
+                            <goal>dev</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <connectorNamePattern>.*Integration\.java$</connectorNamePattern>
+                    <apiFile>src/main/resources/api/example-api.yaml</apiFile>
+                    <resourceFileTypes>
+                        <type>.yaml</type>
+                        <type>.xml</type>
+                        <type>.xslt</type>
+                        <type>.json</type>
+                        <type>.properties</type>
+                    </resourceFileTypes>
+                    <configs>
+                        <config>build-property=quarkus.native.resources.includes=/**</config>
+                        <config>build-property=quarkus.camel.servlet.url-patterns=/*</config>
+                    </configs>
+                    <traits>
+                        <kamelets.auto>false</kamelets.auto>
+                        <container.enabled>true</container.enabled>
+                        <container.request-cpu>250m</container.request-cpu>
+                        <container.request-memory>256Mi</container.request-memory>
+                        <container.limit-cpu>500m</container.limit-cpu>
+                        <container.limit-memory>512Mi</container.limit-memory>
+                        <health.enabled>true</health.enabled>
+                        <health.liveness-probe-enabled>true</health.liveness-probe-enabled>
+                        <health.liveness-scheme>HTTP</health.liveness-scheme>
+                        <health.liveness-initial-delay>0</health.liveness-initial-delay>
+                        <health.liveness-timeout>10</health.liveness-timeout>
+                        <health.liveness-period>15</health.liveness-period>
+                        <health.liveness-success-threshold>1</health.liveness-success-threshold>
+                        <health.liveness-failure-threshold>3</health.liveness-failure-threshold>
+                        <health.readiness-probe-enabled>true</health.readiness-probe-enabled>
+                        <health.readiness-scheme>HTTP</health.readiness-scheme>
+                        <health.readiness-initial-delay>0</health.readiness-initial-delay>
+                        <health.readiness-timeout>10</health.readiness-timeout>
+                        <health.readiness-period>15</health.readiness-period>
+                        <health.readiness-success-threshold>1</health.readiness-success-threshold>
+                        <health.readiness-failure-threshold>3</health.readiness-failure-threshold>
+                        <knative-service.enabled>true</knative-service.enabled>
+                        <knative-service.autoscaling-class>kpa.autoscaling.knative.dev</knative-service.autoscaling-class>
+                        <knative-service.autoscaling-metric>rps</knative-service.autoscaling-metric>
+                        <knative-service.autoscaling-target>100</knative-service.autoscaling-target>
+                        <knative-service.min-scale>1</knative-service.min-scale>
+                        <knative-service.max-scale>20</knative-service.max-scale>
+                        <prometheus.enabled>true</prometheus.enabled>
+                        <prometheus.pod-monitor>true</prometheus.pod-monitor>
+                        <prometheus.pod-monitor-labels>release=kube-prometheus-stack</prometheus.pod-monitor-labels>
+                    </traits>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

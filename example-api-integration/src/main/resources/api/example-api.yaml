@@ -1,0 +1,50 @@
+openapi: 3.0.4
+info:
+  description: Example OpenAPI specification
+  title: Example API
+  version: 1.1.0
+  x-icon: category
+
+tags:
+- description: Example API
+  name: Example API
+paths:
+  /:
+    get:
+      description: Get root endpoint
+      operationId: getRoot
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get-root-response'
+          description: The root endpoint successfully retrieved
+      x-BbAccessControl: false
+  /version:
+    get:
+      description: Get integration version
+      operationId: getVersion
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get-version-response'
+          description: Returns the integration version in JSON
+      x-BbAccessControl: false
+components:
+  schemas:
+    get-root-response:
+      example: "{}"
+      properties: {}
+    get-version-response:
+      example: "{ \"version\": \"1.2.3\" }"
+      properties:
+        version:
+          description: Text representation of integration version in semantic versioning
+            format
+          example: 1.2.3
+          maxLength: 32
+          minLength: 5
+          type: string
